@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from "react";
 import { RiMessageFill } from "react-icons/ri";
 import { FaXTwitter } from "react-icons/fa6";
 import { IoMdCall } from "react-icons/io";
-import profile from '../assets/profile.jpg'
+import profile from "../assets/profile.jpg";
+import emailjs from "@emailjs/browser";
+
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    contact: '',
-    address: '',
-    message: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    message: "",
   });
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -21,10 +21,21 @@ const Contact = () => {
     });
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const form = useRef();
+  
+  const sendEmail = (e) => {
     e.preventDefault();
-    alert(`Form submitted with Name: ${formData.name}, Email: ${formData.email}`);
+
+    emailjs
+      .sendForm("service_n1ept4m", "template_pctp3x7", form.current, "vBN1eIVDxf_tHK1K0")
+      .then(
+        () => {
+          console.log("SUCCESS!");
+        },
+        (error) => {
+          console.log("FAILED...", error.text);
+        }
+      );
   };
 
   return (
@@ -33,18 +44,20 @@ const Contact = () => {
 
       <div className="flex gap-12 justify-center">
         {/* Form Section */}
-        <div className="w-[600px] p-6 bg-white rounded-lg shadow-md"
-        >
-          <form onSubmit={handleSubmit}>
+        <div className="w-[600px] p-6 bg-white rounded-lg shadow-md">
+          <form ref={form} onSubmit={sendEmail}>
             <div className="mb-4">
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 First Name
               </label>
               <input
                 type="text"
                 id="firstName"
-                name="name"
-                value={formData.name}
+                name="firstName"
+                value={formData.firstName}
                 onChange={handleChange}
                 placeholder="Enter your First Name"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -52,14 +65,17 @@ const Contact = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Last Name
               </label>
               <input
                 type="text"
                 id="lastName"
-                name="name"
-                value={formData.name}
+                name="lastName"
+                value={formData.lastName}
                 onChange={handleChange}
                 placeholder="Enter your Last Name"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -67,7 +83,10 @@ const Contact = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Email
               </label>
               <input
@@ -82,7 +101,10 @@ const Contact = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Message
               </label>
               <textarea
@@ -107,28 +129,37 @@ const Contact = () => {
         {/* Contact Details Section */}
         <div className="max-w-sm w-full p-6 bg-white rounded-lg shadow-md">
           <h3 className="text-xl font-semibold mb-4">Contact Details</h3>
-          <div className='flex'>
+          <div className="flex">
             <div>
-          <img className='rounded-full h-28' src={profile} alt="" />
-          </div>
-          <div className='mt-7'>
-          <p className="text-xl font-bold mb-2">Sangam Thapa Magar</p>
-          <p className="text-sm text-gray-600 mb-4">Kathmandu, Nepal</p>
-          </div>
+              <img className="rounded-full h-28" src={profile} alt="Profile" />
+            </div>
+            <div className="mt-7">
+              <p className="text-xl font-bold mb-2">Sangam Thapa Magar</p>
+              <p className="text-sm text-gray-600 mb-4">Kathmandu, Nepal</p>
+            </div>
           </div>
 
           <ul className="space-y-3">
             <li className="flex items-center gap-2 mt-6 ml-5">
               <RiMessageFill className="text-blue-500" />
-              <a href="#" className="text-blue-500 hover:underline">Chat with me</a>
+              <a href="#" className="text-blue-500 hover:underline">
+                Chat with me
+              </a>
             </li>
             <li className="flex items-center gap-2 ml-5">
               <FaXTwitter className="text-blue-500" />
-              <a href="#" className="text-blue-500 hover:underline">Follow me</a>
+              <a href="#" className="text-blue-500 hover:underline">
+                Follow me
+              </a>
             </li>
             <li className="flex items-center gap-2 ml-5">
               <IoMdCall className="text-blue-500" />
-              <a href="tel:+977-0000000000" className="text-blue-500 hover:underline">Call me</a>
+              <a
+                href="tel:+977-0000000000"
+                className="text-blue-500 hover:underline"
+              >
+                Call me
+              </a>
             </li>
           </ul>
         </div>
